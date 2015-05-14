@@ -20,7 +20,8 @@ public class Main {
       in = new FileInputStream(filename);
       ClassFile classFile = Disassembler.disassemble(in);
       if (classFile != null) {
-        System.out.println("read a class file with version " + classFile.prettyPrintedVersion());
+        System.out.println("class file version: " + classFile.prettyPrintedVersion());
+        System.out.println("access flags: " + classFile.accessFlags);
       } else {
         bail("failed to read class file");
       }

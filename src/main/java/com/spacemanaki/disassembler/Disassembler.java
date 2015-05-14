@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.EnumSet;
 
 import static com.spacemanaki.disassembler.Utility.bytes;
 
@@ -42,6 +43,11 @@ public class Disassembler {
       return null;
     }
 
-    return new ClassFile(readVersion(in), readVersion(in));
+    short minor = readVersion(in);
+    short major =  readVersion(in);
+    ConstantPool.skipConstantPool(in);
+    EnumSet<AccessFlags.Flag> flags = AccessFlags.readAccessFlags(new DataInputStream(in));
+
+    return new ClassFile(minor, major, flags);
   }
 }
