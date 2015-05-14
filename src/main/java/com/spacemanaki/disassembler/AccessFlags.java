@@ -2,9 +2,10 @@ package com.spacemanaki.disassembler;
 
 import java.io.DataInputStream;
 import java.util.EnumSet;
+import java.util.Set;
 
 public class AccessFlags {
-  public enum Flag {
+  public enum Flag implements HasMask {
       PUBLIC(0x0001)
     , FINAL(0x0010)
     , SUPER(0x0020)
@@ -18,16 +19,15 @@ public class AccessFlags {
     Flag(int mask) {
       this.mask = mask;
     }
+
+    @Override
+    public int getMask() {
+      return mask;
+    }
   }
 
   public static EnumSet<Flag> readAccessFlags(DataInputStream in) throws Exception {
-    short value = in.readShort();
-
-    EnumSet<Flag> flags = EnumSet.noneOf(Flag.class);
-    for (Flag flag : Flag.values())
-      if ((flag.mask & value) == flag.mask)
-        flags.add(flag);
-
-    return flags;
+    Set<Flag> flags = Utility.readEnumSet(Flag.values(), in.readShort());
+    return flags.isEmpty() ? EnumSet.noneOf(Flag.class) : EnumSet.copyOf(flags);
   }
 }

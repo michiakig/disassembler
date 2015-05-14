@@ -2,6 +2,8 @@ package com.spacemanaki.disassembler;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Utility {
   public static byte[] bytes(int... ints) {
@@ -20,5 +22,15 @@ public class Utility {
   }
   public static DataInputStream stream(byte[] bytes) {
     return new DataInputStream(new ByteArrayInputStream(bytes));
+  }
+
+  public static <T extends HasMask> Set<T> readEnumSet(T[] values, short value) {
+    Set<T> flags = new HashSet<>();
+    for (T flag : values) {
+      if ((flag.getMask() & value) == flag.getMask()) {
+          flags.add(flag);
+      }
+    }
+    return flags;
   }
 }
