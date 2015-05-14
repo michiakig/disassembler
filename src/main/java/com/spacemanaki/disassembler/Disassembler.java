@@ -1,26 +1,37 @@
 package com.spacemanaki.disassembler;
 
-import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+
+import static com.spacemanaki.disassembler.Utility.bytes;
 
 public class Disassembler {
   static char[] chars = "0123456789abcdef".toCharArray();
 
-  public static void main(String[] args) throws Exception {
-    if (args.length < 1) {
-      System.out.println("must supply a filename");
-      System.exit(1);
+  public static byte[] readBytes(InputStream in, int length) {
+    byte[] bytes = new byte[length];
+    try {
+      if (in.read(bytes) < bytes.length) {
+        return null;
+      }
+    } catch (IOException e) {
+      return null;
     }
+    return bytes;
+  }
 
-    String filename = args[0];
-    FileInputStream in = new FileInputStream(filename);
-    byte[] bytes = new byte[4];
-    int read = in.read(bytes);
-    for (byte b : bytes) {
-      System.out.print(chars[(b & 0xf0) >> 4]);
-      System.out.print(chars[b & 0x0f]);
+  private static byte[] magic = bytes(0xca,0xfe,0xba,0xbe);
+  public static boolean readMagic(InputStream in) {
+    byte[] bytes = readBytes(in, 4);
+    return bytes != null && Arrays.equals(magic, bytes);
+  }
+
+  public static void disassemble(InputStream in) throws Exception {
+    if(readMagic(in)) {
+      System.out.println("ok");
+    } else {
+      System.out.println("failed to read magic number");
     }
-    System.out.println();
-
-    in.close();
   }
 }
