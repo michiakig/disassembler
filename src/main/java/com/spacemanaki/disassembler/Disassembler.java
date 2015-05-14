@@ -46,6 +46,11 @@ public class Disassembler {
     ConstantPool.skipConstantPool(in);
     EnumSet<AccessFlags.Flag> flags = AccessFlags.readAccessFlags(in);
 
+    in.skipBytes(2); // this_class
+    in.skipBytes(2); // super_class
+
+    Interfaces.read(in); // skip interfaces
+
     return new ClassFile(minor, major, flags);
   }
 }

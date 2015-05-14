@@ -11,6 +11,13 @@ public class Utility {
     }
     return bytes;
   }
+  public static short[] shorts(int... ints) {
+    short[] shorts = new short[ints.length];
+    for (int i = 0; i < ints.length; i++) {
+      shorts[i] = (short) ints[i];
+    }
+    return shorts;
+  }
   public static DataInputStream stream(byte[] bytes) {
     return new DataInputStream(new ByteArrayInputStream(bytes));
   }
