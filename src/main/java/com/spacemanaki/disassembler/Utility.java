@@ -1,5 +1,8 @@
 package com.spacemanaki.disassembler;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+
 public class Utility {
   public static byte[] bytes(int... ints) {
     byte[] bytes = new byte[ints.length];
@@ -7,5 +10,8 @@ public class Utility {
       bytes[i] = (byte) ints[i];
     }
     return bytes;
+  }
+  public static DataInputStream stream(byte[] bytes) {
+    return new DataInputStream(new ByteArrayInputStream(bytes));
   }
 }
