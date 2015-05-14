@@ -1,5 +1,6 @@
 package com.spacemanaki.disassembler;
 
+import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -18,7 +19,7 @@ public class Main {
     FileInputStream in = null;
     try {
       in = new FileInputStream(filename);
-      ClassFile classFile = Disassembler.disassemble(in);
+      ClassFile classFile = Disassembler.disassemble(new DataInputStream(in));
       if (classFile != null) {
         System.out.println("class file version: " + classFile.prettyPrintedVersion());
         System.out.println("access flags: " + classFile.accessFlags);

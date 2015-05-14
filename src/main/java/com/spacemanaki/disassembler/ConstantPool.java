@@ -2,7 +2,6 @@ package com.spacemanaki.disassembler;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,25 +56,23 @@ public class ConstantPool {
     sizes.put(InfoType.INVOKE_DYNAMIC, 4);
   }
 
-  public static void skipConstantPool(InputStream in) throws IOException {
-    DataInputStream data = new DataInputStream(in);
-    short count = data.readShort();
+  public static void skipConstantPool(DataInputStream in) throws IOException {
+    short count = in.readShort();
     for (short i = 0; i < count - 1; i++) {
       skipEntry(in);
     }
 
   }
 
-  public static void skipEntry(InputStream in) throws IOException {
-    DataInputStream data = new DataInputStream(in);
-    byte tag = data.readByte();
+  public static void skipEntry(DataInputStream in) throws IOException {
+    byte tag = in.readByte();
     InfoType infoType = InfoType.fromTag(tag);
 
     if (sizes.containsKey(infoType)) {
-      data.skipBytes(sizes.get(infoType));
+      in.skipBytes(sizes.get(infoType));
     } else if (infoType == InfoType.UTF_8) {
-      short length = data.readShort();
-      data.skipBytes(length);
+      short length = in.readShort();
+      in.skipBytes(length);
     } else {
       throw new IllegalStateException("should never happen; static map data is bad: missing " + infoType);
     }

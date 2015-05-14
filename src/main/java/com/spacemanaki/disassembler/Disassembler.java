@@ -2,7 +2,6 @@ package com.spacemanaki.disassembler;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.EnumSet;
 
@@ -11,7 +10,7 @@ import static com.spacemanaki.disassembler.Utility.bytes;
 public class Disassembler {
   static char[] chars = "0123456789abcdef".toCharArray();
 
-  public static byte[] readBytes(InputStream in, int length) {
+  public static byte[] readBytes(DataInputStream in, int length) {
     byte[] bytes = new byte[length];
     try {
       if (in.read(bytes) < bytes.length) {
@@ -24,21 +23,20 @@ public class Disassembler {
   }
 
   private static byte[] magic = bytes(0xca,0xfe,0xba,0xbe);
-  public static boolean readMagic(InputStream in) {
+  public static boolean readMagic(DataInputStream in) {
     byte[] bytes = readBytes(in, 4);
     return bytes != null && Arrays.equals(magic, bytes);
   }
 
-  public static short readVersion(InputStream in) {
-    DataInputStream data = new DataInputStream(in);
+  public static short readVersion(DataInputStream in) {
     try {
-      return data.readShort();
+      return in.readShort();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  public static ClassFile disassemble(InputStream in) throws Exception {
+  public static ClassFile disassemble(DataInputStream in) throws Exception {
     if(!readMagic(in)) {
       return null;
     }
@@ -46,7 +44,7 @@ public class Disassembler {
     short minor = readVersion(in);
     short major =  readVersion(in);
     ConstantPool.skipConstantPool(in);
-    EnumSet<AccessFlags.Flag> flags = AccessFlags.readAccessFlags(new DataInputStream(in));
+    EnumSet<AccessFlags.Flag> flags = AccessFlags.readAccessFlags(in);
 
     return new ClassFile(minor, major, flags);
   }
