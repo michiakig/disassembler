@@ -18,7 +18,12 @@ public class Main {
     FileInputStream in = null;
     try {
       in = new FileInputStream(filename);
-      Disassembler.disassemble(in);
+      ClassFile classFile = Disassembler.disassemble(in);
+      if (classFile != null) {
+        System.out.println("read a class file with version " + classFile.prettyPrintedVersion());
+      } else {
+        bail("failed to read class file");
+      }
     } catch (FileNotFoundException e) {
       bail("no such file " + filename);
     }

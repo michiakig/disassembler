@@ -1,5 +1,6 @@
 package com.spacemanaki.disassembler;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -27,11 +28,20 @@ public class Disassembler {
     return bytes != null && Arrays.equals(magic, bytes);
   }
 
-  public static void disassemble(InputStream in) throws Exception {
-    if(readMagic(in)) {
-      System.out.println("ok");
-    } else {
-      System.out.println("failed to read magic number");
+  public static short readVersion(InputStream in) {
+    DataInputStream data = new DataInputStream(in);
+    try {
+      return data.readShort();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
+  }
+
+  public static ClassFile disassemble(InputStream in) throws Exception {
+    if(!readMagic(in)) {
+      return null;
+    }
+
+    return new ClassFile(readVersion(in), readVersion(in));
   }
 }
