@@ -22,13 +22,14 @@ public class FieldAccessFlagTest {
         {bytes(0x00,0x01),EnumSet.of(Field.AccessFlag.PUBLIC)},
         {bytes(0x00,0x02),EnumSet.of(Field.AccessFlag.PRIVATE)},
         {bytes(0x00,0x19),EnumSet.of(Field.AccessFlag.PUBLIC,Field.AccessFlag.STATIC,Field.AccessFlag.FINAL)},
+        {bytes(0x00,0x40),EnumSet.of(Field.AccessFlag.VOLATILE)},
     });
   }
 
   private byte[] input;
-  private EnumSet<AccessFlags.Flag> expected;
+  private EnumSet<Field.AccessFlag> expected;
 
-  public FieldAccessFlagTest(byte[] input, EnumSet<AccessFlags.Flag> expected) {
+  public FieldAccessFlagTest(byte[] input, EnumSet<Field.AccessFlag> expected) {
     this.input = input;
     this.expected = expected;
   }
