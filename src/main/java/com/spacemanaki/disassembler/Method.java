@@ -1,5 +1,7 @@
 package com.spacemanaki.disassembler;
 
+import com.sun.beans.editors.EnumEditor;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.EnumSet;
@@ -31,8 +33,29 @@ public class Method {
     }
   }
 
+  public final EnumSet<AccessFlag> accessFlags;
+  public final short nameIndex;
+  public final short descriptorIndex;
+  public final Attribute[] attributes;
+
+  public Method(EnumSet<AccessFlag> accessFlags, short nameIndex, short descriptorIndex, Attribute[] attributes) {
+    this.accessFlags = accessFlags;
+    this.nameIndex = nameIndex;
+    this.descriptorIndex = descriptorIndex;
+    this.attributes = attributes;
+  }
+
   public static EnumSet<AccessFlag> readAccessFlags(DataInputStream in) throws IOException {
     Set<AccessFlag> flags = Utility.readEnumSet(AccessFlag.values(), in.readShort());
     return flags.isEmpty() ? EnumSet.noneOf(AccessFlag.class) : EnumSet.copyOf(flags);
+  }
+
+  public static Method read(DataInputStream in) throws IOException {
+    return new Method(
+          readAccessFlags(in)
+        , in.readShort()
+        , in.readShort()
+        , Attribute.readArray(in)
+    );
   }
 }
