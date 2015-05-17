@@ -51,6 +51,13 @@ public class Disassembler {
 
     Interfaces.read(in); // skip interfaces
 
+    short fieldsCount = in.readShort();
+    Field[] fields = new Field[fieldsCount];
+    for (int i = 0; i < fieldsCount; i++) {
+      fields[i] = Field.read(in);
+    }
+    System.out.println("found " + fields.length + " fields.");
+
     return new ClassFile(minor, major, flags);
   }
 }
