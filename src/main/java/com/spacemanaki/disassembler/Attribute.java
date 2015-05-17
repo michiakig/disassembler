@@ -3,7 +3,6 @@ package com.spacemanaki.disassembler;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class Attribute {
   public final short nameIndex;
@@ -12,6 +11,15 @@ public class Attribute {
   public Attribute(short nameIndex, byte[] info) {
     this.nameIndex = nameIndex;
     this.info = info;
+  }
+
+  public static Attribute[] readArray(DataInputStream in) throws IOException {
+    short attributesCount = in.readShort();
+    Attribute[] attributes = new Attribute[attributesCount];
+    for (int i = 0; i < attributesCount; i++) {
+      attributes[i] = Attribute.read(in);
+    }
+    return attributes;
   }
 
   public static Attribute read(DataInputStream in) throws IOException {

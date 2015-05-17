@@ -55,11 +55,7 @@ public class Field {
     EnumSet<AccessFlag> flags = readAccessFlag(in);
     short nameIndex = in.readShort();
     short descriptorIndex = in.readShort();
-    short attributesCount = in.readShort();
-    Attribute[] attributes = new Attribute[attributesCount];
-    for (int i = 0; i < attributesCount; i++) {
-      attributes[i] = Attribute.read(in);
-    }
+    Attribute[] attributes = Attribute.readArray(in);
     return new Field(flags, nameIndex, descriptorIndex, attributes);
   }
 }
