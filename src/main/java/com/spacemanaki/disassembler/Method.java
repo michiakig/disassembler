@@ -1,7 +1,5 @@
 package com.spacemanaki.disassembler;
 
-import com.sun.beans.editors.EnumEditor;
-
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.EnumSet;
