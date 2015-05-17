@@ -44,7 +44,7 @@ public class Disassembler {
     short minor = readVersion(in);
     short major =  readVersion(in);
     ConstantPool.skipConstantPool(in);
-    EnumSet<AccessFlags.Flag> flags = AccessFlags.readAccessFlags(in);
+    EnumSet<ClassFile.AccessFlag> accessFlags = ClassFile.readAccessFlags(in);
 
     in.skipBytes(2); // this_class
     in.skipBytes(2); // super_class
@@ -65,6 +65,6 @@ public class Disassembler {
     }
     System.out.println("found " + methods.length + " methods.");
 
-    return new ClassFile(minor, major, flags);
+    return new ClassFile(minor, major, accessFlags);
   }
 }
