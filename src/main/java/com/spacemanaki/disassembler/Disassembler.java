@@ -56,15 +56,13 @@ public class Disassembler {
     for (int i = 0; i < fieldsCount; i++) {
       fields[i] = Field.read(in);
     }
-    System.out.println("found " + fields.length + " fields.");
 
     short methodsCount = in.readShort();
     Method[] methods = new Method[methodsCount];
     for (int i = 0; i < methodsCount; i++) {
       methods[i] = Method.read(in);
     }
-    System.out.println("found " + methods.length + " methods.");
 
-    return new ClassFile(minor, major, accessFlags);
+    return new ClassFile(minor, major, accessFlags, fields, methods);
   }
 }

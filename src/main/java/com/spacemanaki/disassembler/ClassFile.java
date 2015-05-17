@@ -35,11 +35,21 @@ public class ClassFile {
   public final short minorVersion;
   public final short majorVersion;
   public final EnumSet<AccessFlag> accessFlags;
+  public final Field[] fields;
+  public final Method[] methods;
 
-  public ClassFile(short minorVersion,short majorVersion, EnumSet<AccessFlag> accessFlags) {
+  public ClassFile(
+        short minorVersion
+      , short majorVersion
+      , EnumSet<AccessFlag> accessFlags
+      , Field[] fields
+      , Method[] methods
+  ) {
     this.minorVersion = minorVersion;
     this.majorVersion = majorVersion;
     this.accessFlags = accessFlags;
+    this.fields = fields;
+    this.methods = methods;
   }
 
   public String prettyPrintedVersion() {

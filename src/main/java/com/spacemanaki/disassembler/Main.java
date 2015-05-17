@@ -22,7 +22,9 @@ public class Main {
       ClassFile classFile = Disassembler.disassemble(new DataInputStream(in));
       if (classFile != null) {
         System.out.println("class file version: " + classFile.prettyPrintedVersion());
-        System.out.println("access flags: " + classFile.accessFlags);
+        System.out.println("class access flags: " + classFile.accessFlags);
+        System.out.println("found " + classFile.fields.length + " fields");
+        System.out.println("found " + classFile.methods.length + " methods");
       } else {
         bail("failed to read class file");
       }
