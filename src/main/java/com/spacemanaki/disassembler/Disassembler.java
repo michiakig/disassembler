@@ -1,5 +1,7 @@
 package com.spacemanaki.disassembler;
 
+import com.spacemanaki.disassembler.constantpool.ConstantPool;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Arrays;

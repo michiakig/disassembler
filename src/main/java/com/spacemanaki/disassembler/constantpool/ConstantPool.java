@@ -1,4 +1,4 @@
-package com.spacemanaki.disassembler;
+package com.spacemanaki.disassembler.constantpool;
 
 import java.io.DataInputStream;
 import java.io.IOException;

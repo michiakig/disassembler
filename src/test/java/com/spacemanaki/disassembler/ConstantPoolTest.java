@@ -1,5 +1,6 @@
 package com.spacemanaki.disassembler;
 
+import com.spacemanaki.disassembler.constantpool.ConstantPool;
 import org.junit.Test;
 
 import java.io.DataInputStream;
