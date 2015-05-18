@@ -45,7 +45,7 @@ public class Disassembler {
 
     short minor = readVersion(in);
     short major =  readVersion(in);
-    ConstantPool.skipConstantPool(in);
+    ConstantPool constantPool = ConstantPool.read(in);
     EnumSet<ClassFile.AccessFlag> accessFlags = ClassFile.readAccessFlags(in);
 
     in.skipBytes(2); // this_class
@@ -65,6 +65,6 @@ public class Disassembler {
       methods[i] = Method.read(in);
     }
 
-    return new ClassFile(minor, major, accessFlags, fields, methods);
+    return new ClassFile(minor, major, constantPool, accessFlags, fields, methods);
   }
 }

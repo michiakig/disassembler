@@ -2,79 +2,38 @@ package com.spacemanaki.disassembler.constantpool;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
-public class ConstantPool {
-  public enum InfoType {
-    CLASS((byte)7),
-    FIELD_REF((byte)9),
-    METHOD_REF((byte)10),
-    INTERFACE_METHOD_REF((byte)11),
-    STRING((byte)8),
-    INTEGER((byte)3),
-    FLOAT((byte)4),
-    LONG((byte)5),
-    DOUBLE((byte)6),
-    NAME_AND_TYPE((byte)12),
-    UTF_8((byte)1),
-    METHOD_HANDLE((byte)15),
-    METHOD_TYPE((byte)16),
-    INVOKE_DYNAMIC((byte)18);
-
-    public final byte tag;
-    InfoType(byte tag) {
-      this.tag = tag;
-    }
-
-    private static final Map<Byte, InfoType> tags = new HashMap<>();
-    static {
-      for (InfoType infoType : InfoType.values()) {
-        tags.put(infoType.tag, infoType);
-      }
-    }
-
-    public static InfoType fromTag(byte tag) {
-      return tags.get(tag);
-    }
-  }
-
-  private static final Map<InfoType, Integer> sizes = new HashMap<>();
-  static {
-    sizes.put(InfoType.CLASS, 2);
-    sizes.put(InfoType.FIELD_REF, 4);
-    sizes.put(InfoType.METHOD_REF, 4);
-    sizes.put(InfoType.INTERFACE_METHOD_REF, 4);
-    sizes.put(InfoType.STRING, 2);
-    sizes.put(InfoType.INTEGER, 4);
-    sizes.put(InfoType.FLOAT, 4);
-    sizes.put(InfoType.LONG, 8);
-    sizes.put(InfoType.DOUBLE, 8);
-    sizes.put(InfoType.NAME_AND_TYPE, 4);
-    sizes.put(InfoType.METHOD_HANDLE, 3);
-    sizes.put(InfoType.METHOD_TYPE, 2);
-    sizes.put(InfoType.INVOKE_DYNAMIC, 4);
-  }
-
-  public static void skipConstantPool(DataInputStream in) throws IOException {
+public class ConstantPool implements Iterable<Entry> {
+  public static ConstantPool read(DataInputStream in) throws IOException {
     short count = in.readShort();
+    ConstantPool pool = new ConstantPool();
+    // constant pool table is one entry shorter than specified length for some reason
     for (short i = 0; i < count - 1; i++) {
-      skipEntry(in);
+      pool.add(Entry.read(in));
     }
-
+    return pool;
   }
 
-  public static void skipEntry(DataInputStream in) throws IOException {
-    byte tag = in.readByte();
-    InfoType infoType = InfoType.fromTag(tag);
+  private List<Entry> entries = new ArrayList<>();
+  public ConstantPool() {}
 
-    if (sizes.containsKey(infoType)) {
-      in.skipBytes(sizes.get(infoType));
-    } else if (infoType == InfoType.UTF_8) {
-      short length = in.readShort();
-      in.skipBytes(length);
-    } else {
-      throw new IllegalStateException("should never happen; static map data is bad: missing " + infoType);
+  public Entry lookup(int i) {
+    if (i < 1 || i > entries.size()) {
+      throw new IllegalArgumentException("Constant pool index out of bounds: " + i);
     }
+    return entries.get(i - 1);
+  }
+
+  public void add(Entry entry) {
+    entries.add(entry);
+  }
+
+  @Override
+  public Iterator<Entry> iterator() {
+    return entries.iterator();
   }
 }
