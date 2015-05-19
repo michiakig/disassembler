@@ -7,6 +7,10 @@ import java.nio.charset.Charset;
 public class Utf8 extends Entry {
   public final String data;
 
+  public Utf8(String data) {
+    this.data = data;
+  }
+
   public Utf8(DataInputStream in) throws IOException {
     short length = in.readShort();
     byte[] bytes = new byte[length];

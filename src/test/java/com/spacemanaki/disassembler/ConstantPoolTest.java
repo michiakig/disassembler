@@ -2,6 +2,8 @@ package com.spacemanaki.disassembler;
 
 import com.spacemanaki.disassembler.constantpool.ConstantPool;
 import com.spacemanaki.disassembler.constantpool.Entry;
+import com.spacemanaki.disassembler.constantpool.PlaceholderEntry;
+import com.spacemanaki.disassembler.constantpool.Utf8;
 import org.junit.Test;
 
 import java.io.DataInputStream;
@@ -36,5 +38,14 @@ public class ConstantPoolTest {
 
     assertEquals(1, in.available());
     assertEquals(0xff, in.read());
+  }
+
+  @Test public void lookupByUtf8() throws IOException {
+    ConstantPool pool = new ConstantPool();
+    Utf8 utf8 = new Utf8("foo");
+    pool.add(new PlaceholderEntry(Entry.Type.INTEGER, bytes(0x10,0x01,0x10,0x01)));
+    pool.add(utf8);
+
+    assertEquals(utf8, pool.lookupUtf8(2));
   }
 }

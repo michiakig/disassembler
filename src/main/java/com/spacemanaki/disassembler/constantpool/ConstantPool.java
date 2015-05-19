@@ -28,6 +28,14 @@ public class ConstantPool implements Iterable<Entry> {
     return entries.get(i - 1);
   }
 
+  public Utf8 lookupUtf8(int i) {
+    Entry entry = lookup(i);
+    if (entry instanceof Utf8) {
+      return (Utf8)entry;
+    }
+    throw new IllegalStateException("Expected UTF-8 string at index " + i + " in constant pool");
+  }
+
   public void add(Entry entry) {
     entries.add(entry);
   }
