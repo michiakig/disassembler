@@ -1,7 +1,5 @@
 package com.spacemanaki.disassembler.constantpool;
 
-import java.util.Arrays;
-
 public class PlaceholderEntry extends Entry {
   public Type type;
   public byte[] raw;

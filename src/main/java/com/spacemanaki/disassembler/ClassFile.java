@@ -5,7 +5,6 @@ import com.spacemanaki.disassembler.constantpool.ConstantPool;
 import java.io.DataInputStream;
 import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.Objects;
 import java.util.Set;
 
 public class ClassFile {

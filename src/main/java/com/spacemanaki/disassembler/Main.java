@@ -1,6 +1,5 @@
 package com.spacemanaki.disassembler;
 
-import com.spacemanaki.disassembler.constantpool.Entry;
 import com.spacemanaki.disassembler.constantpool.Utf8;
 
 import java.io.DataInputStream;
@@ -19,7 +18,7 @@ public class Main {
     }
 
     String filename = args[0];
-    FileInputStream in = null;
+    FileInputStream in;
     try {
       in = new FileInputStream(filename);
       ClassFile classFile = Disassembler.disassemble(new DataInputStream(in));

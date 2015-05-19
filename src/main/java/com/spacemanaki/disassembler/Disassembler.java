@@ -10,8 +10,6 @@ import java.util.EnumSet;
 import static com.spacemanaki.disassembler.Utility.bytes;
 
 public class Disassembler {
-  static char[] chars = "0123456789abcdef".toCharArray();
-
   public static byte[] readBytes(DataInputStream in, int length) {
     byte[] bytes = new byte[length];
     try {
