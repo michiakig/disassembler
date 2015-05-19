@@ -30,12 +30,12 @@ public class Main {
         System.out.println("found " + classFile.methods.length + " methods");
 
         for (Method method : classFile.methods) {
-          Entry entry = classFile.constantPool.lookup(method.nameIndex);
-          if (entry instanceof Utf8) {
-            Utf8 utf8 = (Utf8)entry;
-            System.out.println("  " + utf8.data+"(...)");
-          } else {
-            System.err.println("Method's name index points to an entry in the constant pool that is not a UTF-8 string");
+          Utf8 name = classFile.constantPool.lookupUtf8(method.nameIndex);
+          System.out.println("  " + name.data+"(...)");
+
+          for (Attribute attribute : method.attributes) {
+            name = classFile.constantPool.lookupUtf8(attribute.nameIndex);
+            System.out.println("    " + name.data);
           }
         }
       } else {
